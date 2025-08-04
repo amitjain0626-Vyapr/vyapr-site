@@ -1,15 +1,15 @@
 import { notFound } from "next/navigation";
-import { createClient } from "@utils/supabase/server";
+import { createClient } from "@utils/supabase/server"; // ✅ using tsconfig alias
 
 export const dynamic = "force-dynamic";
 
 type PageProps = {
-  params: { slug: string };
+  params: {
+    slug: string;
+  };
 };
 
 export default async function Page({ params }: PageProps) {
-  console.log("⚙️ Route param received:", params.slug);
-
   const supabase = createClient();
 
   const { data: dentist, error } = await supabase
@@ -18,10 +18,9 @@ export default async function Page({ params }: PageProps) {
     .ilike("slug", params.slug)
     .single();
 
-  console.log("📦 Supabase response:", { dentist, error });
-
   if (error || !dentist) {
-    console.error("❌ Not found triggered for slug:", params.slug);
+    console.error("Supabase error:", error);
+    console.error("Fetched dentist:", dentist);
     notFound();
   }
 
