@@ -1,12 +1,10 @@
 import { notFound } from "next/navigation";
-import { createClient } from "@utils/supabase/server"; // ✅ using tsconfig alias
+import { createClient } from "@utils/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 type Props = {
-  params: {
-    slug: string;
-  };
+  params: { slug: string };
 };
 
 export default async function Page({ params }: Props) {
@@ -18,9 +16,11 @@ export default async function Page({ params }: Props) {
     .ilike("slug", params.slug)
     .single();
 
+  console.log("slug param:", params.slug);
+  console.log("dentist data:", dentist);
+  console.log("supabase error:", error);
+
   if (error || !dentist) {
-    console.error("Supabase error:", error);
-    console.error("Fetched dentist:", dentist);
     notFound();
   }
 
