@@ -3,7 +3,11 @@ import { createClient } from "@utils/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ params }: { params: { slug: string } }): Promise<JSX.Element> {
+type PageProps = {
+  params: { slug: string };
+};
+
+export default async function Page({ params }: PageProps) {
   console.log("⚙️ Route param received:", params.slug);
 
   const supabase = createClient();
