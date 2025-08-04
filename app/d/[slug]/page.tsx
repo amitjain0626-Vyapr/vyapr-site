@@ -4,19 +4,22 @@ import { createClient } from "@/app/utils/supabase/server";
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const supabase = createClient(); // Do NOT use 'await'
+  console.log("⚙️ Route param received:", params.slug);
+
+  const supabase = createClient();
 
   const { data: dentist, error } = await supabase
-    .from("dentists") // ✅ lowercase as per your schema
+    .from("dentists")
     .select("*")
-    .ilike("slug", params.slug) // ✅ case-insensitive match
+    .ilike("slug", params.slug)
     .single();
 
+  console.log("📦 Supabase response:", { dentist, error });
+
   if (error || !dentist) {
-  console.error("Supabase error:", error);
-  console.error("Fetched dentist:", dentist);
-  notFound();
-}
+    console.error("❌ Not found triggered for slug:", params.slug);
+    notFound();
+  }
 
   return (
     <main className="min-h-screen p-10 flex flex-col items-center text-center">
