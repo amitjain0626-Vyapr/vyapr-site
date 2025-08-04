@@ -1,15 +1,15 @@
 import { notFound } from "next/navigation";
-import { createClient } from "@utils/supabase/server";
+import { createClient } from "@/app/utils/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ params }: any) {
-  const supabase = await createClient();
+export default async function Page({ params }: { params: { slug: string } }) {
+  const supabase = createClient(); // Do NOT use 'await'
 
   const { data: dentist, error } = await supabase
-    .from("dentists")
+    .from("dentists") // ✅ lowercase as per your schema
     .select("*")
-    .eq("slug", params.slug)
+    .ilike("slug", params.slug) // ✅ case-insensitive match
     .single();
 
   if (error || !dentist) {
