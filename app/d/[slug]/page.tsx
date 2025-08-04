@@ -16,9 +16,9 @@ export default async function Page({ params }: Props) {
     .ilike("slug", params.slug)
     .single();
 
-  console.log("slug param:", params.slug);
-  console.log("dentist data:", dentist);
-  console.log("supabase error:", error);
+  console.log("SLUG RECEIVED:", params.slug);
+  console.log("DENTIST FOUND:", dentist);
+  console.log("ERROR:", error);
 
   if (error || !dentist) {
     notFound();
