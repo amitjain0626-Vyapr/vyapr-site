@@ -3,13 +3,13 @@ import { createClient } from "@utils/supabase/server"; // ✅ using tsconfig ali
 
 export const dynamic = "force-dynamic";
 
-type PageProps = {
+type Props = {
   params: {
     slug: string;
   };
 };
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: Props) {
   const supabase = createClient();
 
   const { data: dentist, error } = await supabase
