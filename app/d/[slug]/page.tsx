@@ -13,8 +13,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
     .single();
 
   if (error || !dentist) {
-    notFound();
-  }
+  console.error("Supabase error:", error);
+  console.error("Fetched dentist:", dentist);
+  notFound();
+}
 
   return (
     <main className="min-h-screen p-10 flex flex-col items-center text-center">
