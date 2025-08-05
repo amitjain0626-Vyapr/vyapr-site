@@ -3,24 +3,37 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { notFound } from 'next/navigation';
 
 export default async function MicrositePage({ params }: any) {
-  const supabase = createServerComponentClient({ cookies });
+  console.log("✅ page.tsx loaded for /d/[slug]");
 
-  const { data, error } = await supabase
-    .from('dentists')
-    .select('*')
-    .eq('slug', params.slug)
-    .single();
+  const normalizedSlug = decodeURIComponent(params.slug).trim();
+  console.log("🧪 Normalized slug:", normalizedSlug);
 
-  if (!data || error) {
+  const supabase = createServerComponentClient({ cookies: () => cookies() });
+
+  try {
+    const { data, error } = await supabase
+      .from("dentists")
+      .select("*")
+      .eq("slug", normalizedSlug)
+      .single();
+
+    console.log("📦 Supabase query result:", { data, error });
+
+    if (!data || error) {
+      console.error("❌ No matching dentist found for slug:", normalizedSlug);
+      notFound();
+    }
+
+    return (
+      <div className="p-10 text-center">
+        <h1 className="text-3xl font-bold mb-4">{data.name}</h1>
+        <p className="text-lg mb-2">{data.specialization ?? 'Specialization coming soon'}</p>
+        <p className="text-gray-500">{data.location ?? 'Location not available'}</p>
+        <p className="mt-4">{data.bio ?? 'No bio provided yet.'}</p>
+      </div>
+    );
+  } catch (err) {
+    console.error("🔥 Unexpected error in query:", err);
     notFound();
   }
-
-  return (
-    <div className="p-10 text-center">
-      <h1 className="text-3xl font-bold mb-4">{data.name}</h1>
-      <p className="text-lg mb-2">{data.specialization}</p>
-      <p className="text-gray-500">{data.location}</p>
-      <p className="mt-4">{data.bio}</p>
-    </div>
-  );
 }

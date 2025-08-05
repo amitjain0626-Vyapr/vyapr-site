@@ -15,7 +15,7 @@ export default function Dashboard() {
       if (!user) {
         router.push('/login');
       } else {
-        setUserEmail(user.email);
+        setUserEmail(user?.email ?? null);
       }
     };
 
