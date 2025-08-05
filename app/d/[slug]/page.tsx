@@ -8,7 +8,7 @@ export default async function MicrositePage({ params }: any) {
   const normalizedSlug = decodeURIComponent(params.slug).trim();
   console.log("🧪 Normalized slug:", normalizedSlug);
 
-  const supabase = createServerComponentClient({ cookies: cookies() });
+  const supabase = createServerComponentClient({ cookies });
 
   try {
     const { data, error } = await supabase
