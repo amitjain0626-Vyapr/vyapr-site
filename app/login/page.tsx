@@ -1,49 +1,49 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { createClient } from '../utils/supabase/client'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 
 export default function LoginPage() {
-  const router = useRouter()
-  const supabase = createClient()
+  const router = useRouter();
+  const supabase = createClient();
 
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
 
   // ✅ Automatically redirect if user is already logged in OR logs in after clicking the magic link
   useEffect(() => {
     // Check session initially
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) router.replace('/dashboard')
-    })
+      if (session) router.replace('/dashboard');
+    });
 
     // Listen to magic link login
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        router.replace('/dashboard')
+        router.replace('/dashboard');
       }
-    })
+    });
 
-    return () => subscription.unsubscribe()
-  }, [])
+    return () => subscription.unsubscribe();
+  }, [router, supabase.auth]);
 
   const handleLogin = async () => {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/login`, // return to login route to trigger auth listener
+        emailRedirectTo: `${window.location.origin}/login`,
       },
-    })
+    });
 
     if (error) {
-      setMessage(`❌ ${error.message}`)
+      setMessage(`❌ ${error.message}`);
     } else {
-      setMessage('✅ Check your email for the magic link.')
+      setMessage('✅ Check your email for the magic link.');
     }
-  }
+  };
 
   return (
     <div className="p-10 max-w-md mx-auto text-center">
@@ -63,5 +63,5 @@ export default function LoginPage() {
       </button>
       {message && <p className="mt-4 text-sm">{message}</p>}
     </div>
-  )
+  );
 }

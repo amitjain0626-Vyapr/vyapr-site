@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { createClient } from '../utils/supabase/client'
-
-const supabase = createClient()
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 
 export default function OnboardingPage() {
-  const router = useRouter()
+  const router = useRouter();
+  const supabase = createClient();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,48 +15,49 @@ export default function OnboardingPage() {
     location: '',
     specialization: '',
     bio: ''
-  })
-  const [loading, setLoading] = useState(false)
+  });
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
+      const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        router.replace('/login')
+        router.replace('/login');
       }
-    }
-    checkAuth()
-  }, [])
+    };
+    checkAuth();
+  }, [router, supabase]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const generateSlug = (name: string) =>
-    'dr-' + name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')
+    'dr-' + name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
-    const slug = generateSlug(formData.name)
+    const slug = generateSlug(formData.name);
 
     const { error } = await supabase.from('dentists').insert([
       {
         ...formData,
         slug
       }
-    ])
+    ]);
 
-    setLoading(false)
+    setLoading(false);
 
     if (error) {
-      alert('Error submitting form: ' + error.message)
+      alert('Error submitting form: ' + error.message);
     } else {
-      alert('Success! Redirecting to your profile.')
-      router.push(`/d/${slug}`)
+      alert('Success! Redirecting to your profile.');
+      router.push(`/d/${slug}`);
     }
-  }
+  };
 
   return (
     <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
@@ -73,5 +74,5 @@ export default function OnboardingPage() {
         </button>
       </form>
     </div>
-  )
+  );
 }

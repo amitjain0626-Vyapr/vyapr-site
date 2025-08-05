@@ -1,13 +1,14 @@
-import { createClient } from '../utils/supabase/client'
+'use client';
 
-import { redirect } from 'next/navigation'
+import { createClient } from '@/utils/supabase/client';
+import { redirect } from 'next/navigation';
 
 export default async function Dashboard() {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/login')
+    redirect('/login');
   }
 
   return (
@@ -15,5 +16,6 @@ export default async function Dashboard() {
       <h1 className="text-2xl font-bold mb-4">Welcome, {user.email} 👋</h1>
       <p>You are now logged in via magic link.</p>
     </div>
-  )
+  );
 }
+

@@ -9,8 +9,12 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  console.log("✅ RootLayout is loading — Build reached layout.tsx")
+
   const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   return (
     <html lang="en">
