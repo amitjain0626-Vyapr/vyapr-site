@@ -1,10 +1,9 @@
 import { cookies } from 'next/headers';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/types/supabase'; // only if you’ve typed your DB (optional)
 import { notFound } from 'next/navigation';
 
 export default async function MicrositePage({ params }: any) {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = createServerComponentClient({ cookies });
 
   const { data, error } = await supabase
     .from('dentists')
@@ -12,13 +11,8 @@ export default async function MicrositePage({ params }: any) {
     .eq('slug', params.slug)
     .single();
 
-  if (error) {
-    console.error('❌ Supabase error:', error.message);
-  }
-
-  if (!data) {
-    console.warn('⚠️ No dentist found for slug:', params.slug);
-    notFound(); // triggers 404
+  if (!data || error) {
+    notFound();
   }
 
   return (
@@ -30,4 +24,3 @@ export default async function MicrositePage({ params }: any) {
     </div>
   );
 }
-
