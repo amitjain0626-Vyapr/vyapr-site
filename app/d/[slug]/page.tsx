@@ -1,9 +1,9 @@
-export default async function Page({ params }: { params: { slug: string } }) {
-  console.log("✅ Rendering slug page for:", params.slug)
-
+export default function Page({ params }: { params: { slug: string } }) {
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold">Hello from {params.slug}</h1>
+    <div>
+      <h1>Hello from {params.slug}</h1>
     </div>
   );
 }
+
+
