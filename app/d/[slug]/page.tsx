@@ -31,5 +31,16 @@ export default async function MicrositePage({ params }: any) {
       <div className="p-10 text-center">
         <h1 className="text-3xl font-bold mb-4">{data.name}</h1>
         <p className="text-lg mb-2">
-          {data.specialization ?
-// touching to force route re-index
+          {data.specialization ?? "Specialization coming soon"}
+        </p>
+        <p className="text-gray-500">
+          {data.location ?? "Location not available"}
+        </p>
+        <p className="mt-4">{data.bio ?? "No bio provided yet."}</p>
+      </div>
+    );
+  } catch (err) {
+    console.error("🔥 Unexpected error in query:", err);
+    notFound();
+  }
+}
