@@ -23,7 +23,10 @@ export default async function MicrositePage({ params }: any) {
     console.log("📦 Supabase query result:", { data, error });
 
     if (!data || error) {
-      console.error("❌ No matching dentist found for slug:", normalizedSlug);
+      console.error("❌ Query failed — either data is null or error occurred");
+      console.log("🔍 Data:", data);
+      console.log("🔍 Error:", error);
+      console.log("🔍 Slug used in query:", normalizedSlug);
       notFound();
     }
 
