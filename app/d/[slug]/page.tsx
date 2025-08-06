@@ -4,9 +4,11 @@ import { cookies } from 'next/headers';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { notFound } from 'next/navigation';
 
-type Props = { params: { slug: string } };
-
-export default async function MicrositePage({ params }: Props) {
+export default async function MicrositePage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   console.log("✅ /d/[slug]/page.tsx loaded");
   const normalizedSlug = decodeURIComponent(params.slug).trim();
   console.log("🧪 Normalized slug:", normalizedSlug);
@@ -17,7 +19,7 @@ export default async function MicrositePage({ params }: Props) {
     const { data, error } = await supabase
       .from("dentists")
       .select("*")
-      .ilike("slug", normalizedSlug) // 👈 More flexible
+      .ilike("slug", normalizedSlug)
       .single();
 
     console.log("📦 Supabase query result:", { data, error });
