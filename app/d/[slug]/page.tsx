@@ -1,20 +1,8 @@
 import { cookies } from "next/headers";
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
-
-export default async function Page({ params }: Props) {
-  const slug = params.slug;
-
-  console.log("✅ [slug]/page.tsx loaded with slug:", slug);
-
-  // TEMP DEBUG
-  if (slug !== 'dr-amit-jain') {
-    return <h1>Slug not matched</h1>;
-  }
+export default async function Page({ params }: { params: { slug: string } }) {
+  const slug = params?.slug;
+  console.log("✅ SSR Route Hit for slug:", slug);
 
   return (
     <main className="p-10">
@@ -22,3 +10,6 @@ export default async function Page({ params }: Props) {
     </main>
   );
 }
+
+// ✅ Force dynamic rendering to fix stale cache or prebuild issues
+export const dynamic = "force-dynamic";
