@@ -1,20 +1,24 @@
 import { cookies } from "next/headers";
 
-export default async function Page({ params }: { params: { slug: string } }) {
+type Props = {
+  params: {
+    slug: string;
+  };
+};
+
+export default async function Page({ params }: Props) {
   const slug = params.slug;
 
-  // ✅ SSR Debug log
-  console.log("🔍 Server-side route param:", slug);
+  console.log("✅ [slug]/page.tsx loaded with slug:", slug);
 
-  // 🔎 TEMP: Manual match test
-  if (slug !== "dr-amit-jain") {
-    return <h1 className="p-10 text-red-500 text-xl">Slug not matched</h1>;
+  // TEMP DEBUG
+  if (slug !== 'dr-amit-jain') {
+    return <h1>Slug not matched</h1>;
   }
 
-  // ✅ Success
   return (
     <main className="p-10">
-      <h1 className="text-2xl text-green-600">✅ It works: {slug}</h1>
+      <h1 className="text-2xl">✅ It works: {slug}</h1>
     </main>
   );
 }
