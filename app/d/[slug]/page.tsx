@@ -1,8 +1,11 @@
 import { cookies } from "next/headers";
+export const dynamic = "force-dynamic";
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const slug = params?.slug;
-  console.log("✅ SSR Route Hit for slug:", slug);
+// ✅ DON'T add your own `{ params: { slug: string } }` type — let Next.js infer
+export default async function Page(props: any) {
+  const slug = props?.params?.slug;
+
+  console.log("✅ SSR HIT — Slug is:", slug);
 
   return (
     <main className="p-10">
@@ -10,6 +13,3 @@ export default async function Page({ params }: { params: { slug: string } }) {
     </main>
   );
 }
-
-// ✅ Force dynamic rendering to fix stale cache or prebuild issues
-export const dynamic = "force-dynamic";
