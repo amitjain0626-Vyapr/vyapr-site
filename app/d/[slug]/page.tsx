@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { notFound } from "next/navigation";
 
-export default async function MicrositePage({ params }: any) {
+export default async function Page({ params }: any) {
   console.log("✅ /d/[slug]/page.tsx loaded");
 
   const normalizedSlug = decodeURIComponent(params.slug).trim();
