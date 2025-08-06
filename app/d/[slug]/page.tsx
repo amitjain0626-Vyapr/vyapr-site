@@ -1,10 +1,13 @@
+export const dynamic = "force-dynamic";
+
 import { cookies } from 'next/headers';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { notFound } from 'next/navigation';
 
-export default async function MicrositePage({ params }: any) {
-  console.log("✅ page.tsx loaded for /d/[slug]");
+type Props = { params: { slug: string } };
 
+export default async function MicrositePage({ params }: Props) {
+  console.log("✅ /d/[slug]/page.tsx loaded");
   const normalizedSlug = decodeURIComponent(params.slug).trim();
   console.log("🧪 Normalized slug:", normalizedSlug);
 
@@ -14,7 +17,7 @@ export default async function MicrositePage({ params }: any) {
     const { data, error } = await supabase
       .from("dentists")
       .select("*")
-      .eq("slug", normalizedSlug)
+      .ilike("slug", normalizedSlug) // 👈 More flexible
       .single();
 
     console.log("📦 Supabase query result:", { data, error });
