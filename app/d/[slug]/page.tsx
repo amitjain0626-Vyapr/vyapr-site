@@ -1,14 +1,21 @@
-type PageProps = {
-  params: {
-    slug: string;
-  };
-};
+import { Metadata } from 'next';
 
-export default async function Page({ params }: PageProps) {
-  console.log("✅ SSR for slug:", params.slug)
+export const dynamicParams = true;
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  return {
+    title: `${params.slug}'s Vyapr Page`,
+  };
+}
+
+export default async function Page({ params }: { params: { slug: string } }) {
+  const { slug } = params;
+  console.log('✅ Server-side rendering for slug:', slug);
+
   return (
-    <div>
-      <h1>Hello from {params.slug}</h1>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold">Hello from {slug}</h1>
+      <p>This is the dynamic route for <strong>{slug}</strong>.</p>
     </div>
   );
 }
